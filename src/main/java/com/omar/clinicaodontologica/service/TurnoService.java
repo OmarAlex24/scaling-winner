@@ -1,6 +1,7 @@
 package com.omar.clinicaodontologica.service;
 
 import com.omar.clinicaodontologica.entity.Turno;
+import com.omar.clinicaodontologica.exception.ResourceNotFound;
 import com.omar.clinicaodontologica.repository.TurnoRepository;
 import com.omar.clinicaodontologica.service.interfaces.iServiceTurno;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +28,25 @@ public class TurnoService implements iServiceTurno {
     }
 
     @Override
-    public ResponseEntity<Turno> getById(Long id) {
+    public ResponseEntity<Turno> getById(Long id) throws ResourceNotFound{
         if(turnoRepository.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Turno no encontrado");
         }
         return ResponseEntity.ok(turnoRepository.findById(id).get());
     }
 
     @Override
-    public ResponseEntity<Turno> update(Turno turno) {
+    public ResponseEntity<Turno> update(Turno turno) throws ResourceNotFound {
         if(turnoRepository.findById(turno.getId()).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Turno no encontrado");
         }
         return ResponseEntity.ok(turnoRepository.save(turno));
     }
 
     @Override
-    public ResponseEntity<String> deleteById(Long id) {
+    public ResponseEntity<String> deleteById(Long id) throws ResourceNotFound {
         if(turnoRepository.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Turno no encontrado");
         }
         turnoRepository.deleteById(id);
         return ResponseEntity.ok("Turno eliminado correctamente");

@@ -1,6 +1,7 @@
 package com.omar.clinicaodontologica.controller;
 
 import com.omar.clinicaodontologica.entity.Turno;
+import com.omar.clinicaodontologica.exception.ResourceNotFound;
 import com.omar.clinicaodontologica.service.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public class TurnoController {
     private TurnoService turnoService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Turno> getTurnoById(@PathVariable Long id) {
+    public ResponseEntity<Turno> getTurnoById(@PathVariable Long id) throws ResourceNotFound {
         return turnoService.getById(id);
     }
 
@@ -29,12 +30,12 @@ public class TurnoController {
     }
 
     @PutMapping
-    public ResponseEntity<Turno> updateTurnoById(@RequestBody Turno turno) {
+    public ResponseEntity<Turno> updateTurnoById(@RequestBody Turno turno) throws ResourceNotFound {
         return turnoService.update(turno);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTurno(@PathVariable Long id) {
+    public ResponseEntity<String> deleteTurno(@PathVariable Long id) throws ResourceNotFound {
         return turnoService.deleteById(id);
     }
 }

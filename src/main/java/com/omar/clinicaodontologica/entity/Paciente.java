@@ -26,9 +26,12 @@ public class Paciente {
     private String cedula;
     @Column
     private LocalDate fechaIngreso;
-    @Column
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "domicilio_id", referencedColumnName = "id")
     private Domicilio domicilio;
-    @Column
+
+    @Column(unique = true, nullable = false)
     private String email;
 
     public Paciente(String nombre, String apellido, String cedula, LocalDate fechaIngreso, Domicilio domicilio, String email, Integer odontologoId) {

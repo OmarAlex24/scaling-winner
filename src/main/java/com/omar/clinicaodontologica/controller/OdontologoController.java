@@ -1,6 +1,7 @@
 package com.omar.clinicaodontologica.controller;
 
 import com.omar.clinicaodontologica.entity.Odontologo;
+import com.omar.clinicaodontologica.exception.ResourceNotFound;
 import com.omar.clinicaodontologica.service.OdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class OdontologoController {
     private OdontologoService odontologoService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Odontologo> getOdontologoById(@PathVariable Long id) {
+    public ResponseEntity<Odontologo> getOdontologoById(@PathVariable Long id) throws ResourceNotFound {
         return odontologoService.getById(id);
     }
 
@@ -30,12 +31,12 @@ public class OdontologoController {
     }
 
     @PutMapping
-    public ResponseEntity<Odontologo> updateOdontologo(@RequestBody Odontologo odontologo) {
+    public ResponseEntity<Odontologo> updateOdontologo(@RequestBody Odontologo odontologo) throws ResourceNotFound {
         return odontologoService.update(odontologo);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteOdontologo(@PathVariable Long id) {
+    public ResponseEntity<String> deleteOdontologo(@PathVariable Long id) throws ResourceNotFound {
         return odontologoService.deleteById(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.omar.clinicaodontologica.service;
 
 import com.omar.clinicaodontologica.entity.Domicilio;
+import com.omar.clinicaodontologica.exception.ResourceNotFound;
 import com.omar.clinicaodontologica.repository.DomicilioRepository;
 import com.omar.clinicaodontologica.service.interfaces.iServiceDomicilio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +30,25 @@ public class DomicilioService implements iServiceDomicilio {
     }
 
     @Override
-    public ResponseEntity<Domicilio> getById(Long id) {
+    public ResponseEntity<Domicilio> getById(Long id) throws ResourceNotFound {
         if(domicilioRepository.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Domicilio no encontrado");
         }
         return ResponseEntity.ok(domicilioRepository.findById(id).get());
     }
 
     @Override
-    public ResponseEntity<Domicilio> update(Domicilio domicilio) {
+    public ResponseEntity<Domicilio> update(Domicilio domicilio) throws ResourceNotFound{
         if(domicilioRepository.findById(domicilio.getId()).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Domicilio no encontrado");
         }
         return ResponseEntity.ok(domicilioRepository.save(domicilio));
     }
 
     @Override
-    public ResponseEntity<String> deleteById(Long id) {
+    public ResponseEntity<String> deleteById(Long id) throws ResourceNotFound{
         if(domicilioRepository.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Domicilio no encontrado");
         }
         domicilioRepository.deleteById(id);
         return ResponseEntity.ok("Domicilio eliminado correctamente");

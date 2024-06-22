@@ -1,6 +1,7 @@
 package com.omar.clinicaodontologica.service;
 
 import com.omar.clinicaodontologica.entity.Paciente;
+import com.omar.clinicaodontologica.exception.ResourceNotFound;
 import com.omar.clinicaodontologica.repository.PacienteRepository;
 import com.omar.clinicaodontologica.service.interfaces.iServicePaciente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,9 @@ public class PacienteService implements iServicePaciente {
     PacienteRepository pacienteRepository;
 
     @Override
-    public ResponseEntity<Paciente> save(Paciente paciente) {
-        if(pacienteRepository.existsById(paciente.getId())){
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<Paciente> save(Paciente paciente) throws ResourceNotFound {
+        if(pacienteRepository.existsPacienteByEmailIgnoreCase(paciente.getEmail())){
+            throw new ResourceNotFound("El email ya se encuentra registrado");
         }
         return ResponseEntity.ok(pacienteRepository.save(paciente));
     }
@@ -27,25 +28,25 @@ public class PacienteService implements iServicePaciente {
     }
 
     @Override
-    public ResponseEntity<Paciente> getById(Long id) {
+    public ResponseEntity<Paciente> getById(Long id) throws ResourceNotFound {
         if(pacienteRepository.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Paciente no encontrado");
         }
         return ResponseEntity.ok(pacienteRepository.findById(id).get());
     }
 
     @Override
-    public ResponseEntity<Paciente> update(Paciente paciente) {
+    public ResponseEntity<Paciente> update(Paciente paciente) throws ResourceNotFound {
         if(pacienteRepository.findById(paciente.getId()).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Paciente no encontrado");
         }
         return ResponseEntity.ok(pacienteRepository.save(paciente));
     }
 
     @Override
-    public ResponseEntity<String> deleteById(Long id) {
+    public ResponseEntity<String> deleteById(Long id) throws ResourceNotFound {
         if(pacienteRepository.findById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Paciente no encontrado");
         }
         pacienteRepository.deleteById(id);
         return ResponseEntity.ok("Paciente eliminado correctamente");
