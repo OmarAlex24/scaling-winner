@@ -37,7 +37,7 @@ public class PacienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTurno(@PathVariable Long id) throws ResourceNotFound {
+    public ResponseEntity<String> deletePaciente(@PathVariable Long id) throws ResourceNotFound {
         return pacienteService.deleteById(id);
     }
 }

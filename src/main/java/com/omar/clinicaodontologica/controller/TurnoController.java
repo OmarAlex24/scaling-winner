@@ -1,5 +1,6 @@
 package com.omar.clinicaodontologica.controller;
 
+import com.omar.clinicaodontologica.dto.TurnoDTO;
 import com.omar.clinicaodontologica.entity.Turno;
 import com.omar.clinicaodontologica.exception.ResourceNotFound;
 import com.omar.clinicaodontologica.service.TurnoService;
@@ -25,7 +26,7 @@ public class TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<Turno> saveTurno(@RequestBody Turno turno) {
+    public ResponseEntity<Turno> saveTurno(@RequestBody TurnoDTO turno) throws ResourceNotFound {
         return turnoService.save(turno);
     }
 

@@ -2,6 +2,7 @@ package com.omar.clinicaodontologica.service;
 
 import com.omar.clinicaodontologica.entity.Paciente;
 import com.omar.clinicaodontologica.exception.ResourceNotFound;
+import com.omar.clinicaodontologica.repository.DomicilioRepository;
 import com.omar.clinicaodontologica.repository.PacienteRepository;
 import com.omar.clinicaodontologica.service.interfaces.iServicePaciente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.util.List;
 public class PacienteService implements iServicePaciente {
     @Autowired
     PacienteRepository pacienteRepository;
+    @Autowired
+    private DomicilioRepository domicilioRepository;
 
     @Override
     public ResponseEntity<Paciente> save(Paciente paciente) throws ResourceNotFound {
@@ -40,6 +43,10 @@ public class PacienteService implements iServicePaciente {
         if(pacienteRepository.findById(paciente.getId()).isEmpty()){
             throw new ResourceNotFound("Paciente no encontrado");
         }
+        if (domicilioRepository.findById(paciente.getDomicilio().getId()).isEmpty()){
+            throw new ResourceNotFound("Domicilio no encontrado");
+        }
+        domicilioRepository.save(paciente.getDomicilio());
         return ResponseEntity.ok(pacienteRepository.save(paciente));
     }
 

@@ -1,7 +1,14 @@
 package com.omar.clinicaodontologica.service;
 
+import com.omar.clinicaodontologica.dto.TurnoDTO;
+import com.omar.clinicaodontologica.entity.Domicilio;
+import com.omar.clinicaodontologica.entity.Odontologo;
+import com.omar.clinicaodontologica.entity.Paciente;
 import com.omar.clinicaodontologica.entity.Turno;
 import com.omar.clinicaodontologica.exception.ResourceNotFound;
+import com.omar.clinicaodontologica.repository.DomicilioRepository;
+import com.omar.clinicaodontologica.repository.OdontologoRepository;
+import com.omar.clinicaodontologica.repository.PacienteRepository;
 import com.omar.clinicaodontologica.repository.TurnoRepository;
 import com.omar.clinicaodontologica.service.interfaces.iServiceTurno;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +21,18 @@ public class TurnoService implements iServiceTurno {
     @Autowired
     TurnoRepository turnoRepository;
 
+    @Autowired
+    PacienteRepository pacienteRepository;
+
+    @Autowired
+    OdontologoRepository odontologoRepository;
+
     @Override
-    public ResponseEntity<Turno> save(Turno turno) {
-        if(turnoRepository.existsById(turno.getId())){
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(turnoRepository.save(turno));
+    public ResponseEntity<Turno> save(TurnoDTO turno) throws ResourceNotFound{
+        Odontologo odontologoBuscado = odontologoRepository.findById(turno.getOdontologoId()).orElseThrow(() -> new ResourceNotFound("Odontologo no encontrado"));
+        Paciente pacienteBuscado = pacienteRepository.findById(turno.getPacienteId()).orElseThrow(() -> new ResourceNotFound("Paciente no encontrado"));
+
+        return ResponseEntity.ok(turnoRepository.save(new Turno(pacienteBuscado, odontologoBuscado, turno.getFecha())));
     }
 
     @Override
