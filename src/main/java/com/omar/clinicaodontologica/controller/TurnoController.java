@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/turnos")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TurnoController {
     @Autowired
     private TurnoService turnoService;

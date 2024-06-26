@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatosIniciales implements ApplicationRunner {
+
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -19,7 +20,12 @@ public class DatosIniciales implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         String passSinCifrar= "admin";
         String passCifrado=  passwordEncoder.encode(passSinCifrar);
-        Usuario usuario= new Usuario("jorgito","jpereryradh","admin@admin.com",passCifrado, UsuarioRole.ROLE_USER);
+        Usuario usuario= new Usuario("jorgito","jpereryradh","admin@admin.com",passCifrado, UsuarioRole.ROLE_ADMIN);
         usuarioRepository.save(usuario);
+
+        String passSinCifrar2= "user";
+        String passCifrado2=  passwordEncoder.encode(passSinCifrar2);
+        Usuario usuario2= new Usuario("jorgito2","jpereryradh2","user@user.com",passCifrado2, UsuarioRole.ROLE_USER);
+        usuarioRepository.save(usuario2);
     }
 }
